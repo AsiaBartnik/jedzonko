@@ -17,11 +17,12 @@
       --ink: #242820;
       --muted: #6c7468;
       --line: #e3e8de;
+      --home: #fff6dd;
+      --home-ink: #6d5610;
       --shadow: 0 18px 60px rgba(45, 58, 34, .11);
     }
 
     * { box-sizing: border-box; }
-
     html { scroll-behavior: smooth; }
 
     body {
@@ -48,9 +49,7 @@
       box-shadow: var(--shadow);
     }
 
-    .hero {
-      overflow: hidden;
-    }
+    .hero { overflow: hidden; }
 
     .hero-image-wrap {
       position: relative;
@@ -77,9 +76,7 @@
         linear-gradient(135deg, #e7f2df, #f7f0df);
     }
 
-    .hero-content {
-      padding: 28px;
-    }
+    .hero-content { padding: 28px; }
 
     .eyebrow {
       display: inline-flex;
@@ -184,21 +181,31 @@
       background: #fff;
     }
 
+    .ingredient.home {
+      background: var(--home);
+      border-color: #f0dfaa;
+    }
+
     .ingredient input {
       width: 20px;
       height: 20px;
       accent-color: var(--green);
     }
 
-    .ingredient-name {
-      font-weight: 720;
-    }
+    .ingredient-name { font-weight: 720; }
 
     .ingredient-qty {
       color: var(--muted);
       font-size: 14px;
       text-align: right;
       white-space: nowrap;
+    }
+
+    .home-note {
+      margin: -4px 0 14px;
+      color: var(--home-ink);
+      font-size: 14px;
+      line-height: 1.5;
     }
 
     .steps {
@@ -235,9 +242,7 @@
       font-weight: 800;
     }
 
-    #button-area {
-      min-height: 60px;
-    }
+    #button-area { min-height: 60px; }
 
     #loading {
       display: flex;
@@ -294,26 +299,16 @@
       }
 
       .hero,
-      .section-card {
-        border-radius: 21px;
-      }
+      .section-card { border-radius: 21px; }
 
-      .hero-image {
-        height: 260px;
-      }
+      .hero-image { height: 260px; }
 
       .hero-content,
-      .section-card {
-        padding: 20px;
-      }
+      .section-card { padding: 20px; }
 
-      .macro-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
+      .macro-grid { grid-template-columns: repeat(2, 1fr); }
 
-      .ingredient {
-        grid-template-columns: 28px 1fr;
-      }
+      .ingredient { grid-template-columns: 28px 1fr; }
 
       .ingredient-qty {
         grid-column: 2;
@@ -332,7 +327,7 @@
       </div>
 
       <div class="hero-content">
-        <div class="eyebrow">🌿 Bezmięsny przepis</div>
+        <div class="eyebrow">🌿 Przepis</div>
         <h1 id="title">Jedzonko</h1>
         <p id="description" class="description"></p>
 
@@ -341,18 +336,24 @@
           <span id="time-pill" class="meta-pill hidden"></span>
         </div>
 
-        <div id="macro-grid" class="macro-grid">
-          <div class="macro"><strong id="kcal">—</strong><span>kcal</span></div>
-          <div class="macro"><strong id="protein">—</strong><span>białko</span></div>
-          <div class="macro"><strong id="fat">—</strong><span>tłuszcz</span></div>
-          <div class="macro"><strong id="carbs">—</strong><span>węglowodany</span></div>
+        <div class="macro-grid">
+          <div class="macro"><strong id="kcal">—</strong><span>kcal / 1 porcja</span></div>
+          <div class="macro"><strong id="protein">—</strong><span>białko / 1 porcja</span></div>
+          <div class="macro"><strong id="fat">—</strong><span>tłuszcz / 1 porcja</span></div>
+          <div class="macro"><strong id="carbs">—</strong><span>węglowodany / 1 porcja</span></div>
         </div>
       </div>
     </article>
 
     <section class="section-card">
-      <h2>Składniki</h2>
-      <ul id="ingredients" class="ingredients"></ul>
+      <h2>Składniki do kupienia</h2>
+      <ul id="shopping-ingredients" class="ingredients"></ul>
+    </section>
+
+    <section id="home-section" class="section-card">
+      <h2>Masz już w domu</h2>
+      <p class="home-note">Te składniki są potrzebne do przepisu, ale nie zostaną dodane do Listonic.</p>
+      <ul id="home-ingredients" class="ingredients"></ul>
     </section>
 
     <section id="steps-section" class="section-card">
@@ -371,7 +372,7 @@
       </div>
 
       <button id="copy-link" class="secondary-button" type="button">Skopiuj link do tego przepisu</button>
-      <p class="footer-note">Strona odczytuje dane z parametrów adresu URL i nie przechowuje ich na serwerze.</p>
+      <p class="footer-note">Do Listonic trafiają wyłącznie składniki z sekcji „Składniki do kupienia”.</p>
     </section>
   </main>
 
@@ -380,8 +381,17 @@
       const params = new URLSearchParams(window.location.search);
 
       const get = (name, fallback = "") => params.get(name) || fallback;
-      const split = (value, separator = "|") =>
-        value.split(separator).map(v => v.trim()).filter(Boolean);
+      const split = (value) => value.split("|").map(v => v.trim()).filter(Boolean);
+
+      const pantryKeywords = [
+        "sól",
+        "pieprz",
+        "oliwa",
+        "olej",
+        "olej rzepakowy",
+        "olej do smażenia",
+        "oliwa z oliwek"
+      ];
 
       const listName = get("name", "Weekendowe kanapki z jajkiem");
       const description = get(
@@ -399,8 +409,42 @@
         "Przekrój bajgiel i chałkę.|Podsmaż kiełbasę.|Usmaż dwa jajka sadzone.|Na pieczywie ułóż ser, kiełbasę i jajka.|Dopraw solą i pieprzem."
       );
 
-      const ingredients = split(rawItems);
+      const allIngredients = split(rawItems);
       const steps = split(rawSteps);
+
+      function isPantryItem(item) {
+        const normalized = item
+          .toLowerCase()
+          .replace(/[–—-]/g, " ")
+          .replace(/\s+/g, " ")
+          .trim();
+
+        return pantryKeywords.some(keyword =>
+          normalized === keyword ||
+          normalized.startsWith(keyword + " ") ||
+          normalized.includes(" " + keyword + " ")
+        );
+      }
+
+      function normalizeForListonic(item) {
+        return item
+          .replace(/\s*[–—-]\s*/g, " ")
+          .replace(/\s+/g, " ")
+          .trim();
+      }
+
+      function splitNameAndQuantity(item) {
+        const clean = normalizeForListonic(item);
+        const match = clean.match(/^(.*?)(\s+\d+(?:[.,]\d+)?\s*(?:g|kg|ml|l|szt\.?|op\.?|opakowania?|ząbki?|łyżki?|łyżeczki?|plastry?|puszki?|pęczki?|porcje?))$/i);
+
+        return {
+          name: match ? match[1].trim() : clean,
+          quantity: match ? match[2].trim() : ""
+        };
+      }
+
+      const shoppingItems = allIngredients.filter(item => !isPantryItem(item));
+      const homeItems = allIngredients.filter(isPantryItem);
 
       document.title = listName + " | Jedzonko";
       document.getElementById("title").textContent = listName;
@@ -442,34 +486,40 @@
       document.getElementById("fat").textContent = get("fat", "—");
       document.getElementById("carbs").textContent = get("carbs", "—");
 
-      const ingredientsList = document.getElementById("ingredients");
+      function renderIngredients(items, targetId, home = false) {
+        const target = document.getElementById(targetId);
 
-      ingredients.forEach((item, index) => {
-        const match = item.match(/^(.*?)(?:\s[-–—]\s|\s{2,})(.+)$/);
-        const name = match ? match[1].trim() : item;
-        const qty = match ? match[2].trim() : "";
+        items.forEach((item, index) => {
+          const parsed = splitNameAndQuantity(item);
+          const li = document.createElement("li");
+          li.className = "ingredient" + (home ? " home" : "");
 
-        const li = document.createElement("li");
-        li.className = "ingredient";
+          const checkbox = document.createElement("input");
+          checkbox.type = "checkbox";
+          checkbox.id = targetId + "-" + index;
 
-        const checkbox = document.createElement("input");
-        checkbox.type = "checkbox";
-        checkbox.id = "ingredient-" + index;
+          const label = document.createElement("label");
+          label.className = "ingredient-name";
+          label.htmlFor = checkbox.id;
+          label.textContent = parsed.name;
 
-        const label = document.createElement("label");
-        label.className = "ingredient-name";
-        label.htmlFor = checkbox.id;
-        label.textContent = name;
+          const quantity = document.createElement("span");
+          quantity.className = "ingredient-qty";
+          quantity.textContent = parsed.quantity;
 
-        const quantity = document.createElement("span");
-        quantity.className = "ingredient-qty";
-        quantity.textContent = qty;
+          li.appendChild(checkbox);
+          li.appendChild(label);
+          li.appendChild(quantity);
+          target.appendChild(li);
+        });
+      }
 
-        li.appendChild(checkbox);
-        li.appendChild(label);
-        li.appendChild(quantity);
-        ingredientsList.appendChild(li);
-      });
+      renderIngredients(shoppingItems, "shopping-ingredients");
+      renderIngredients(homeItems, "home-ingredients", true);
+
+      if (homeItems.length === 0) {
+        document.getElementById("home-section").classList.add("hidden");
+      }
 
       const stepsList = document.getElementById("steps");
 
@@ -488,7 +538,7 @@
 
       const button = document.createElement("div");
       button.className = "listonic-button";
-      button.dataset.items = ingredients.join(", ");
+      button.dataset.items = shoppingItems.map(normalizeForListonic).join(", ");
       button.dataset.name = listName;
       button.dataset.style = JSON.stringify({
         primaryColor: "#4f9b2f",
