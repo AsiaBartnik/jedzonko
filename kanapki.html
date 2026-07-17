@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#76b82a">
+  <title>Weekendowe kanapki z jajkiem — lista zakupów</title>
+  <style>
+    :root {
+      --green: #76b82a;
+      --green-dark: #4d8615;
+      --cream: #fffaf1;
+      --ink: #252822;
+      --muted: #6b7066;
+      --card: #ffffff;
+      --line: #e8eadf;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 12% 10%, #eef8df 0, transparent 28rem),
+        linear-gradient(180deg, var(--cream), #f5f6ef);
+    }
+
+    main {
+      width: min(680px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 36px 0;
+    }
+
+    .card {
+      overflow: hidden;
+      background: var(--card);
+      border: 1px solid rgba(37, 40, 34, .08);
+      border-radius: 28px;
+      box-shadow: 0 18px 60px rgba(46, 57, 30, .12);
+    }
+
+    header {
+      padding: 32px 30px 26px;
+      background: linear-gradient(135deg, #f4fadf, #fffaf1);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 12px;
+      padding: 7px 11px;
+      border-radius: 999px;
+      background: #fff;
+      color: var(--green-dark);
+      font-size: 13px;
+      font-weight: 750;
+      letter-spacing: .02em;
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 520px;
+      font-size: clamp(30px, 7vw, 48px);
+      line-height: 1.02;
+      letter-spacing: -.045em;
+    }
+
+    .subtitle {
+      margin: 14px 0 0;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.55;
+    }
+
+    section {
+      padding: 26px 30px 32px;
+    }
+
+    ul {
+      display: grid;
+      gap: 10px;
+      margin: 0 0 24px;
+      padding: 0;
+      list-style: none;
+    }
+
+    li {
+      display: grid;
+      grid-template-columns: 42px 1fr auto;
+      gap: 12px;
+      align-items: center;
+      min-height: 58px;
+      padding: 10px 14px 10px 10px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #fff;
+    }
+
+    .icon {
+      display: grid;
+      width: 40px;
+      height: 40px;
+      place-items: center;
+      border-radius: 12px;
+      background: #f4f7ea;
+      font-size: 22px;
+    }
+
+    .name {
+      font-weight: 720;
+    }
+
+    .qty {
+      color: var(--muted);
+      font-size: 14px;
+      text-align: right;
+    }
+
+    .button-wrap {
+      min-height: 54px;
+      margin-top: 6px;
+    }
+
+    .fallback {
+      display: none;
+      width: 100%;
+      min-height: 54px;
+      align-items: center;
+      justify-content: center;
+      border: 0;
+      border-radius: 15px;
+      background: var(--green);
+      color: white;
+      font: inherit;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .status {
+      min-height: 24px;
+      margin: 12px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      text-align: center;
+    }
+
+    footer {
+      padding: 0 30px 28px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+      text-align: center;
+    }
+
+    @media (max-width: 520px) {
+      main { padding: 16px 0; }
+      header, section { padding-left: 20px; padding-right: 20px; }
+      footer { padding-left: 20px; padding-right: 20px; }
+      .card { border-radius: 22px; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <article class="card">
+      <header>
+        <div class="eyebrow">🥚 Lista na weekend</div>
+        <h1>Kanapki z jajkiem</h1>
+        <p class="subtitle">
+          Dwie kanapki: jedna na bajglu, druga na chałce, z serem żółtym,
+          jajkiem sadzonym i kiełbasą.
+        </p>
+      </header>
+
+      <section>
+        <ul aria-label="Składniki do kupienia">
+          <li><span class="icon">🥯</span><span class="name">Bajgiel</span><span class="qty">1 szt.</span></li>
+          <li><span class="icon">🍞</span><span class="name">Chałka</span><span class="qty">1 szt.</span></li>
+          <li><span class="icon">🥚</span><span class="name">Jajka</span><span class="qty">2 szt.</span></li>
+          <li><span class="icon">🧀</span><span class="name">Ser żółty</span><span class="qty">40 g</span></li>
+          <li><span class="icon">🌭</span><span class="name">Kiełbasa</span><span class="qty">80 g</span></li>
+          <li><span class="icon">🧈</span><span class="name">Masło</span><span class="qty">1 op.</span></li>
+          <li><span class="icon">🧂</span><span class="name">Sól</span><span class="qty">1 op.</span></li>
+          <li><span class="icon">⚫</span><span class="name">Pieprz</span><span class="qty">1 op.</span></li>
+        </ul>
+
+        <div class="button-wrap">
+          <div
+            class="listonic-button"
+            data-name="Weekendowe kanapki z jajkiem"
+            data-items="1 bajgiel, 1 chałka, 2 jajka, 40 g sera żółtego, 80 g kiełbasy, 1 opakowanie masła, 1 opakowanie soli, 1 opakowanie pieprzu"
+            data-style='{"primaryColor":"#76b82a","textColor":"#ffffff","borderRadius":"15px","padding":"16px 22px","buttonText":"Dodaj wszystko do Listonic","fontFamily":"Inter, sans-serif","fontSize":"16px","fontWeight":"800"}'>
+          </div>
+
+          <button class="fallback" id="fallbackButton" type="button">
+            Skopiuj listę do Listonic
+          </button>
+        </div>
+
+        <p class="status" id="status">
+          Przycisk Listonic wymaga połączenia z internetem.
+        </p>
+      </section>
+
+      <footer>
+        Po kliknięciu wybierzesz lub utworzysz listę w aplikacji Listonic.
+      </footer>
+    </article>
+  </main>
+
+  <script>
+    const shoppingList = `bajgiel – 1 szt.
+chałka – 1 szt.
+jajka – 2 szt.
+ser żółty – 40 g
+kiełbasa – 80 g
+masło – 1 op.
+sól – 1 op.
+pieprz – 1 op.`;
+
+    const fallbackButton = document.getElementById("fallbackButton");
+    const status = document.getElementById("status");
+
+    fallbackButton.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(shoppingList);
+        status.textContent = "Lista została skopiowana. Otwórz Listonic i wklej produkty.";
+      } catch {
+        status.textContent = "Nie udało się skopiować listy automatycznie.";
+      }
+    });
+
+    window.addEventListener("load", () => {
+      setTimeout(() => {
+        const renderedButton = document.querySelector(
+          ".listonic-button button, .listonic-button a, .listonic-button iframe"
+        );
+        if (!renderedButton) {
+          fallbackButton.style.display = "flex";
+          status.textContent =
+            "Przycisk Listonic nie załadował się. Użyj przycisku kopiowania.";
+        }
+      }, 2500);
+    });
+  </script>
+
+  <script
+    src="https://embed.listonic.com/v1/listonic-button.min.js"
+    defer
+    onerror="document.getElementById('fallbackButton').style.display='flex';document.getElementById('status').textContent='Przycisk Listonic nie załadował się. Użyj przycisku kopiowania.';">
+  </script>
+</body>
+</html>
